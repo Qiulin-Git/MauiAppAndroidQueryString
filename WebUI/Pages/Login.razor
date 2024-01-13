@@ -1,0 +1,29 @@
+﻿@page "/Login"
+@attribute [AllowAnonymous]
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthProvider
+
+<h3>Return URL is:@ReturnUrl</h3>
+<br />
+
+<button @onclick="SubmitUserLogin">Log in</button>
+
+@code {
+
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "returnUrl")]
+    public string? ReturnUrl { get; set; }
+
+
+    private async Task SubmitUserLogin()
+    {
+
+        await ((ApiAuthenticationStateProvider)AuthProvider).MarkUserAsAuthenticated("Admin");
+
+        if (ReturnUrl == null) ReturnUrl = "/";
+        Navigation.NavigateTo(ReturnUrl, true);
+    }
+
+
+}

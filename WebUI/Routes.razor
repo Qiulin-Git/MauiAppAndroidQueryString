@@ -1,0 +1,37 @@
+﻿<!-- CascadingAuthenticationState组件:用来提供经过验证的用户的信息。-->
+<CascadingAuthenticationState>
+
+    <Router AppAssembly="@typeof(_Imports).Assembly">
+        <Found Context="routeData">
+            <PageTitle>Blazor Hybrid</PageTitle>
+            <!-- AuthorizaRouteView组件:用来确保用户是否可以访问给定的页面-->
+            <AuthorizeRouteView Resource="@routeData" RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <Authorizing>
+                    Authorization in progress, please be patient...
+                </Authorizing>
+                <NotAuthorized>
+                    @if (context.User.Identity?.IsAuthenticated != true)
+                    {
+                        <RedirectToLogin></RedirectToLogin>
+                    }
+                    else
+                    {
+                        <PageTitle>Prohibit Access</PageTitle>
+                        <ResultForbidden></ResultForbidden>
+                    }
+                </NotAuthorized>
+            </AuthorizeRouteView>
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <ResultNotFound></ResultNotFound>
+            </LayoutView>
+        </NotFound>
+    </Router>
+
+</CascadingAuthenticationState>
+
+
